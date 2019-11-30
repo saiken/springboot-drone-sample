@@ -10,4 +10,30 @@ steps:
 - name: build
   image: gradle:jdk11
   commands:
-    - ./gradlew build
+    - ./gradlew --no-daemon clean assemble
+
+- name: test
+  image: gradle:jdk11
+  commands:
+    - ./gradlew --no-daemon clean test
+
+- name: notification
+  image: plugins/slack
+  settings:
+    webhook:
+      from_secret: webhook
+    channel: saiken1212
+    username: drone
+    template: >
+      {{#success build.status}}
+        build {{build.number}} succeeded. Good job.
+      {{else}}
+        build {{build.number}} failed. Fix me please.
+      {{/success}}
+  depends_on:
+    - build
+    - test
+  when:
+    status:
+      - success
+      - failure
