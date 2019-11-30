@@ -7,15 +7,15 @@ steps:
   commands:
   - set
 
-#- name: build
-#  image: gradle:jdk11
-#  commands:
-#    - ./gradlew --no-daemon clean assemble
-#
-#- name: test
-#  image: gradle:jdk11
-#  commands:
-#    - ./gradlew --no-daemon clean test
+- name: build
+  image: gradle:jdk11
+  commands:
+    - ./gradlew --no-daemon clean assemble
+
+- name: test
+  image: gradle:jdk11
+  commands:
+    - ./gradlew --no-daemon clean test
 
 - name: notification
   image: plugins/slack
@@ -30,9 +30,9 @@ steps:
       {{else}}
         build {{build.number}} failed. Fix me please.
       {{/success}}
-#  depends_on:
-#    - build
-#    - test
+  depends_on:
+    - build
+    - test
   when:
     status:
       - success
