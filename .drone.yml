@@ -6,3 +6,8 @@ steps:
   image: alpine:3.8
   commands:
   - set
+
+- name: build
+  image: gradle:jdk11
+  commands:
+    - ./gradlew build
